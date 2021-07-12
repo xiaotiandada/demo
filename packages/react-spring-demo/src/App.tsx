@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import './App.css';
 import Home from './views/Home/index';
+import Demo from './views/Demo/index';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
       <Switch>
         <Route path="/" exact>
           <Home></Home>
+        </Route>
+        <Route path="/demo" exact>
+          <Demo></Demo>
         </Route>
       </Switch>
     </Router>
