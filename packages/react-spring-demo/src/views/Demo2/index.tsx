@@ -8,7 +8,41 @@ import bg from '../../assets/images/bg.png'
 import ground from '../../assets/images/ground.png'
 import player from '../../assets/images/player.png'
 
-const Demo2: React.FC = () => {
+const Demo: React.FC = () => {
+
+
+  const computeHexagonPoints = (width: number, height: number, edge: number): number[][] => {
+    let centerX = width /2 ;
+    let centerY = height / 2;
+    let x = edge * Math.sqrt(3) / 2
+    let y = edge / 2
+    let left = centerX - x
+    let top = centerY - 2 * y
+    let x1, x2, x3, x4, x5, x6;
+    let y1, y2, y3, y4, y5, y6;
+
+    x5 = x6 = left
+    x2 = x3 = left + 2 * x
+    x1 = x4 = left + x
+
+    y1 = top
+    y2 = y6 = top + y
+    y3 = y5 = top + 3 * y
+    y4 = top + 4 * y
+
+    let points = []
+    points[0] = [x1, y1]
+    points[1] = [x2, y2]
+    points[2] = [x3, y3]
+    points[3] = [x4, y4]
+    points[4] = [x5, y5]
+    points[5] = [x6, y6]
+
+    return points
+
+  }
+
+  console.log(computeHexagonPoints(300, 300 , 10).flat(2))
 
   const load = () => {
 
@@ -25,55 +59,37 @@ const Demo2: React.FC = () => {
     });
 
     let rectangle = new PIXI.Graphics();
-    rectangle.lineStyle(2, 0xFF3300, 1);
+    let w = (120 * Math.sqrt(3) / 2) * 2
+    let h = 120 * 2
+
+    rectangle.lineStyle(1, 0xFF3300, 1);
     rectangle.beginFill(0x66CCFF);
-    rectangle.drawPolygon([
-      182, 64,
-      313, 64,
-      362, 162,
-      313,260,
-      182,260,
-      131,162,
-    ]);
+    rectangle.drawPolygon(computeHexagonPoints(w, h , 120).flat(2));
     rectangle.endFill();
-    rectangle.x = 170;
-    rectangle.y = 170;
+    rectangle.x = w / 2;
+    rectangle.y = h / 2;
+    rectangle.pivot.set(w / 2, h / 2)
     app.stage.addChild(rectangle);
 
     let rectangle1 = new PIXI.Graphics();
-    rectangle1.lineStyle(2, 0xFF3300, 1);
+    rectangle1.lineStyle(1, 0xFF3300, 1);
     rectangle1.beginFill(0x66CCFF);
-    rectangle1.drawPolygon([
-      182, 64,
-      313, 64,
-      362, 162,
-      313,260,
-      182,260,
-      131,162,
-    ]);
+    rectangle1.drawPolygon(computeHexagonPoints(w, h, 120).flat(2));
     rectangle1.endFill();
-    rectangle1.x = 0;
-    rectangle1.y = 0;
+    rectangle1.x = w / 2 + w + 1;
+    rectangle1.y = h / 2;
+    rectangle1.pivot.set(w / 2, h / 2)
     app.stage.addChild(rectangle1);
 
-
-    let style = new PIXI.TextStyle({
-      fontFamily: "Arial",
-      fontSize: 36,
-      fill: "white",
-      stroke: '#ff3300',
-      strokeThickness: 4,
-      dropShadow: true,
-      dropShadowColor: "#000000",
-      dropShadowBlur: 4,
-      dropShadowAngle: Math.PI / 6,
-      dropShadowDistance: 6,
-    });
-    let message = new PIXI.Text("Hello Pixi!", style);
-    message.position.set(54, 96);
-    app.stage.addChild(message);
-
-
+    let rectangle2 = new PIXI.Graphics();
+    rectangle2.lineStyle(1, 0xFF3300, 1);
+    rectangle2.beginFill(0x66CCFF);
+    rectangle2.drawPolygon(computeHexagonPoints(w, h, 120).flat(2));
+    rectangle2.endFill();
+    rectangle2.x = w / 2 + 2 * w + 1 + 1;
+    rectangle2.y = h / 2;
+    rectangle2.pivot.set(w / 2, h / 2)
+    app.stage.addChild(rectangle2);
 
     // The application will create a canvas element for you that you
     // can then insert into the DOM
@@ -88,35 +104,13 @@ const Demo2: React.FC = () => {
       .add('player', player)
       .load((loader, resources) => {
 
-        console.log('resources', resources)
-
-        // This creates a texture from a 'bunny.png' image
-        const bunny = new PIXI.Sprite(resources.bunny.texture);
-
-        // Setup the position of the bunny
-        bunny.x = app.renderer.width / 2;
-        bunny.y = app.renderer.height / 2;
-
-        // Rotate around the center
-        bunny.anchor.x = 0.5;
-        bunny.anchor.y = 0.5;
-
-        // Add the bunny to the scene we are building
-        app.stage.addChild(bunny);
-
-
-      // const texture = new Texture(resources.clouds.texture);
-      const tilingSprite = new TilingSprite(resources.clouds.texture, width, 263);
-      app.stage.addChild(tilingSprite);
-
+      console.log('resources', resources)
 
       // Listen for frame updates
       app.ticker.add(() => {
         // each frame we spin the bunny around a bit
-        bunny.rotation += 0.01;
-        // bunny.position.x += 1
 
-        tilingSprite.tilePosition.x -= 1
+        // rectangle1.rotation += 0.02
       });
     });
 
@@ -136,4 +130,4 @@ const Demo2: React.FC = () => {
   );
 }
 
-export default Demo2;
+export default Demo;
